@@ -1,0 +1,7 @@
+filePath,tempated,fileName,LinkStatusCode,statusCode,MessageError,UploadThrue
+disk%3A%2FScreenshot.png,false,./img_for_upload/Screenshot.png,200,201,,1
+disk%3A%2FaboutIT.png,false,./img_for_upload/aboutIT.png,200,201,,2
+disk%3A%2FtestImgJpg.jpg,false,./img_for_upload/testImgJpg.jpg,200,201,,3
+disk%3A%2FScreenshot.png,false,./img_for_upload/Screenshot.png,409,409,DiskResourceAlreadyExistsError,3
+disk%3A%2FScreenshot.png,true,./img_for_upload/Screenshot.png,200,201,,3
+disk%2FaboutIT.png,true,./img_for_upload/aboutIT.png,409,409,DiskPathDoesntExistsError,3

@@ -1,0 +1,772 @@
+{
+	"info": {
+		"_postman_id": "3c32e539-a5b0-4736-b3f2-ec12e461ec7c",
+		"name": "YaDisk_upload_file",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "single iteration",
+			"item": [
+				{
+					"name": "To verify Users Ya Disk",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200, rand disk is empty\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.json;",
+									"    pm.expect(jsonData.total_space).to.eql(0);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "149d69ab-2ed7-4742-9640-c00bc51c34f3",
+								"exec": [
+									"if(pm.variables.get(\"iteration\")){",
+									"    postman.setNextRequest(\"To get link with requiered param\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "{{headers}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "{{headers}}",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To get link for upload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"",
+									"pm.test(\"Status code is 200, response is json link received\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody(\"href\");",
+									"",
+									"});",
+									"",
+									"let linkValue = jsonData.href;",
+									"",
+									"pm.globals.set(\"url\", linkValue);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=%2Ftest.txt",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "%2Ftest.txt"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload test file",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3bab2c14-8783-4383-be41-13f8197655ed",
+								"exec": [
+									"pm.test(\"Status code is 201 and file upload\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload test file without field attach",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3bab2c14-8783-4383-be41-13f8197655ed",
+								"exec": [
+									"pm.test(\"Status code is 201 and file upload\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.globals.unset(\"url\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{url}}",
+							"host": [
+								"{{url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To get link without token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"",
+									"pm.test(`Status code is 401. Message: ${jsonData.message}`, function(){",
+									"    pm.response.to.have.status(401);",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody(\"error\");",
+									"    pm.expect(jsonData.description).to.eql(\"Unauthorized\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{headers}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=%2FnoAuth.txt",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "%2FnoAuth.txt"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To get link with invalid token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"",
+									"pm.test(`Status code is 401. Message: ${jsonData.message}`, function(){",
+									"    pm.response.to.have.status(401);",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody(\"error\");",
+									"    pm.expect(jsonData.description).to.eql(\"Unauthorized\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Authorization",
+								"value": "OAuth AQAAAAAxhHTgAAV9Xnd_1jtv8Uy4l6Ih9UhyNOT",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=%2FInvalidAuth.txt",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "%2FInvalidAuth.txt"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To get link without headers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"",
+									"pm.test(\"Status code is 200, response is json link received\", function(){",
+									"    pm.response.to.have.status(200);",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody(\"href\");",
+									"    pm.response.to.not.have.jsonBody(\"error\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=%2FWithoutHeaders.txt",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "%2FWithoutHeaders.txt"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To get link without wrong/xml headers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"const res = cheerio.load(pm.response.text());",
+									"const headerError = res(\"h1\").text();",
+									"const textError = res(\"p\").text();",
+									"",
+									"console.log(textError);",
+									"console.log(headerError);",
+									"",
+									"pm.test(`Status code is 500, text error: ${textError}`, function(){",
+									"    pm.response.to.have.status(500);",
+									"    pm.response.text();",
+									"    pm.expect(headerError).to.not.be.empty;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/xml",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path=%2FWithoutWrongHeaders.txt",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "%2FWithoutWrongHeaders.txt"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To get link without required filds",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"",
+									"pm.test(`Status code is 400, message: ${jsonData.message}`, function(){",
+									"    pm.response.to.have.status(400);",
+									"    pm.response.to.be.json;",
+									"    pm.response.to.have.jsonBody(\"description\");",
+									"    pm.response.to.have.jsonBody(\"error\");",
+									"",
+									"});",
+									"",
+									"pm.globals.set(\"iteration\", 1);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1347ff1a-76c3-4bc4-b3c5-18e59f11888a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e157ae9d-99d3-4787-aada-e2a960544065",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "loop get links with different data",
+			"item": [
+				{
+					"name": "To get link with requiered param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path={{linkPath}}",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "{{linkPath}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "81f56c4d-2e0d-4a8d-b2aa-8cf902e7dc3e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "194ea0c1-5a0b-4e9e-bc6b-d15066d1fb0c",
+						"type": "text/javascript",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"let dataFields = data.fields;",
+							"",
+							"",
+							"pm.test(`Status code is ${data.linkStatusCode}, response is json, and has fields: ${data.fields}`, function(){",
+							"    pm.response.to.have.status(data.linkStatusCode);",
+							"    pm.response.to.be.json;",
+							"    ",
+							"    for(let field of dataFields){",
+							"        pm.response.to.have.jsonBody(field);",
+							"    }",
+							"    ",
+							"    if(pm.response.to.have.status(200)){",
+							"       postman.setNextRequest(\"Upload file\"); ",
+							"    }",
+							"    else{postman.setNextRequest(null);}",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Upload file",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "{{folder_path}}{{file}}"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://uploader18o.disk.yandex.net:443/upload-target/20190307T190219.603.utd.2dukl44yg679jj8vmseups0nf-k18o.969793",
+					"protocol": "https",
+					"host": [
+						"uploader18o",
+						"disk",
+						"yandex",
+						"net"
+					],
+					"port": "443",
+					"path": [
+						"upload-target",
+						"20190307T190219.603.utd.2dukl44yg679jj8vmseups0nf-k18o.969793"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "To verify uploaded file",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://cloud-api.yandex.net/v1/disk/resources?path={{linkPath}}&fields=name,created,modified",
+					"protocol": "https",
+					"host": [
+						"cloud-api",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"v1",
+						"disk",
+						"resources"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "{{linkPath}}"
+						},
+						{
+							"key": "fields",
+							"value": "name,created,modified"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

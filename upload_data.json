@@ -1,0 +1,9 @@
+{"comment": "link with absolute path",
+  "linkPath": "disk%3A%2Ftest%2Fuserpic_full.jpg",
+  "linkStatusCode": 200,
+  "fields": ["href", "method", "templated"],
+  "method": "PUT",
+  "templated": false,
+  "file": "userpic_full.jpg",
+  "uploadStatusCode": 201
+}
