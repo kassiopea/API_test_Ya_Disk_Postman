@@ -16,13 +16,19 @@
 							"script": {
 								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
 								"exec": [
-									"const jsonData = pm.response.json();",
+									"if(pm.variables.get(\"iteration\")){",
+									"    postman.setNextRequest(\"To get link with requiered param\");",
+									"}else{",
+									"    const jsonData = pm.response.json();",
 									"",
-									"pm.test(\"Status code is 200, rand disk is empty\", function(){",
-									"    pm.response.to.have.status(200);",
-									"    pm.response.to.be.json;",
-									"    pm.expect(jsonData.total_space).to.eql(0);",
-									"});"
+									"    pm.test(\"Status code is 200, rand disk is empty\", function(){",
+									"        pm.response.to.have.status(200);",
+									"        pm.response.to.be.json;",
+									"        pm.expect(jsonData.used_space).to.eql(0);",
+									"    });",
+									"}",
+									"",
+									"pm.globals.set(\"iteration\", 1);"
 								],
 								"type": "text/javascript"
 							}
@@ -32,9 +38,7 @@
 							"script": {
 								"id": "149d69ab-2ed7-4742-9640-c00bc51c34f3",
 								"exec": [
-									"if(pm.variables.get(\"iteration\")){",
-									"    postman.setNextRequest(\"To get link with requiered param\");",
-									"}"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -81,7 +85,7 @@
 					"response": []
 				},
 				{
-					"name": "To get link for upload",
+					"name": "To get test link for upload",
 					"event": [
 						{
 							"listen": "test",
@@ -179,8 +183,8 @@
 							"formdata": [
 								{
 									"key": "file",
-									"type": "file",
-									"src": ""
+									"value": "{{folder_path}}test.txt",
+									"type": "text"
 								}
 							]
 						},
@@ -590,7 +594,42 @@
 							"script": {
 								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
 								"exec": [
+									"const jsonData = pm.response.json();",
+									"let dataFields = data.fields;",
+									"",
+									"",
+									"pm.test(`Status code is ${data.linkStatusCode}, response is json, and has fields: ${data.fields}`, function(){",
+									"    pm.response.to.have.status(data.linkStatusCode);",
+									"    pm.response.to.be.json;",
+									"    ",
+									"    for(let field of dataFields){",
+									"        pm.response.to.have.jsonBody(field);",
+									"    }",
+									"});",
+									"",
+									"if(responseCode.code === 200){",
+									"    pm.globals.set(\"url\", jsonData.href);",
+									"    postman.setNextRequest(\"Upload file\");",
+									"}",
+									"else{",
+									"    postman.setNextRequest(null);",
+									"}",
+									"",
 									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d1f28f47-754a-4596-b18c-dc8c2eef5e58",
+								"exec": [
+									"if(data.linkPath2){",
+									"    let fullLinkPath = data.linkPath1 + data.linkPath2;",
+									"",
+									"    pm.globals.set(\"linkPath\", fullLinkPath);",
+									"}"
 								],
 								"type": "text/javascript"
 							}
@@ -661,23 +700,7 @@
 						"id": "194ea0c1-5a0b-4e9e-bc6b-d15066d1fb0c",
 						"type": "text/javascript",
 						"exec": [
-							"const jsonData = pm.response.json();",
-							"let dataFields = data.fields;",
-							"",
-							"",
-							"pm.test(`Status code is ${data.linkStatusCode}, response is json, and has fields: ${data.fields}`, function(){",
-							"    pm.response.to.have.status(data.linkStatusCode);",
-							"    pm.response.to.be.json;",
-							"    ",
-							"    for(let field of dataFields){",
-							"        pm.response.to.have.jsonBody(field);",
-							"    }",
-							"    ",
-							"    if(pm.response.to.have.status(200)){",
-							"       postman.setNextRequest(\"Upload file\"); ",
-							"    }",
-							"    else{postman.setNextRequest(null);}",
-							"});"
+							""
 						]
 					}
 				}
@@ -685,6 +708,20 @@
 		},
 		{
 			"name": "Upload file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "68f7ce36-919f-4344-bdf8-9597419cec1f",
+						"exec": [
+							"pm.test(`Status code is ${data.uploadStatusCode}`, function(){",
+							"    pm.response.to.have.status(data.uploadStatusCode);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -699,18 +736,9 @@
 					]
 				},
 				"url": {
-					"raw": "https://uploader18o.disk.yandex.net:443/upload-target/20190307T190219.603.utd.2dukl44yg679jj8vmseups0nf-k18o.969793",
-					"protocol": "https",
+					"raw": "{{url}}",
 					"host": [
-						"uploader18o",
-						"disk",
-						"yandex",
-						"net"
-					],
-					"port": "443",
-					"path": [
-						"upload-target",
-						"20190307T190219.603.utd.2dukl44yg679jj8vmseups0nf-k18o.969793"
+						"{{url}}"
 					]
 				}
 			},
@@ -718,6 +746,23 @@
 		},
 		{
 			"name": "To verify uploaded file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e77893fd-aa48-418c-9e3b-824c5b024c6c",
+						"exec": [
+							"pm.test(`Status code is 200 and response is json`, function(){",
+							"    pm.response.to.have.status(200);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"postman.setNextRequest(null);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [

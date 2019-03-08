@@ -1,9 +1,52 @@
-{"comment": "link with absolute path",
-  "linkPath": "disk%3A%2Ftest%2Fuserpic_full.jpg",
+[{"comment": "link with absolute path",
+  "linkPath": "disk%3A%2Fuserpic_full.jpg",
   "linkStatusCode": 200,
   "fields": ["href", "method", "templated"],
   "method": "PUT",
   "templated": false,
   "file": "userpic_full.jpg",
   "uploadStatusCode": 201
-}
+},{
+  "comment": "link with root directory relative path",
+  "linkPath": "aboutIT.png",
+  "linkStatusCode": 200,
+  "fields": ["href", "method", "templated"],
+  "method": "PUT",
+  "templated": false,
+  "file": "aboutIT.png",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with relative path to non-root folder",
+  "linkPath": "test%2FaboutIT.png",
+  "linkStatusCode": 200,
+  "fields": ["href", "method", "templated"],
+  "method": "PUT",
+  "templated": false,
+  "file": "aboutIT.png",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with path without decoding in url",
+  "linkPath": "test/main.pdf",
+  "linkStatusCode": 200,
+  "fields": ["href", "method", "templated"],
+  "method": "PUT",
+  "templated": false,
+  "file": "main.pdf",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with long path, example 255 characters and file with another name",
+  "linkPath1":"MyRsCVYb9xfi0iIzlep1K1NYP2SNkBhGF04TkSVTK4PRafdYfzursxmcAOnpOXP5SAmpt3j0AE1MLM2L0poOLJwjYmvDlOZgkoI9hT6n6V4dlmB0BwrgnSyCD1",
+  "linkPath2":"jjocErgJFQnNmfQ2im2tAWXflvFSV77BTTxCdDeonVjeX0qRtwimnq33zDu7P40drAZKJBZQFP7t8sPLVe55l4IvPbPF9DPZIjQVXcNKbztKT8KeKRqQ16FTHJSs7rklA.txt",
+  "linkStatusCode": 200,
+  "fields": ["href", "method", "templated"],
+  "method": "PUT",
+  "templated": false,
+  "file": "255characters.txt",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with long path, example 256 characters and file with another name",
+  "linkPath1":"NOTRsCVYb9xfi0iIzlep1K1NYP2SNkBhGF04TkSVTK4PRafdYfzursxmcAOnpOXP5SAmpt3j0AE1MLM2L0poOLJwjYmvDlOZgkoI9hT6n6V4dlmB0BwrgnSyCD1",
+  "linkPath2":"jjocErgJFQnNmfQ2im2tAWXflvFSV77BTTxCdDeonVjeX0qRtwimnq33zDu7P40drAZKJBZQFP7t8sPLVe55l4IvPbPF9DPZIjQVXcNKbztKT8KeKRqQ16FTHJSs7rklA.txt",
+  "linkStatusCode": 404,
+  "fields": ["description", "error"]
+}]
