@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "description": "test collections in postman and/or newman for testing Yandex Disk API",
   "main": "index.js",
-    "repository": {
-    "type" : "git",
-    "url" : ""
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kassiopea/API_test_Ya_Disk.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Anastasia Salikova <randomNaNastya@gmail.com>",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "newman": "^4.4.0"
   }
 }
