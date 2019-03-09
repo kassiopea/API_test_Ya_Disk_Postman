@@ -7,7 +7,7 @@
   "file": "userpic_full.jpg",
   "uploadStatusCode": 201
 },{
-  "comment": "link with root directory relative path",
+  "comment": "link with relative path to root directory ",
   "linkPath": "aboutIT.png",
   "linkStatusCode": 200,
   "fields": ["href", "method", "templated"],
@@ -24,6 +24,11 @@
   "templated": false,
   "file": "aboutIT.png",
   "uploadStatusCode": 201
+},{
+  "comment": "link with invalid relative path to non-root folder",
+  "linkPath": "invalid%2FaboutIT.png",
+  "linkStatusCode": 409,
+  "fields": ["description", "error"]
 },{
   "comment": "link with path without decoding in url",
   "linkPath": "test/main.pdf",
@@ -49,4 +54,19 @@
   "linkPath2":"jjocErgJFQnNmfQ2im2tAWXflvFSV77BTTxCdDeonVjeX0qRtwimnq33zDu7P40drAZKJBZQFP7t8sPLVe55l4IvPbPF9DPZIjQVXcNKbztKT8KeKRqQ16FTHJSs7rklA.txt",
   "linkStatusCode": 404,
   "fields": ["description", "error"]
-}]
+},{
+  "comment": "link to existing path",
+  "linkPath": "aboutIT.png",
+  "linkStatusCode": 409,
+  "fields": ["description", "error"]
+},{
+  "comment": "link with overwrite empty",
+  "linkPath": "2222.jpg",
+  "overwrite": "",
+  "linkStatusCode": 200,
+  "fields": ["href", "method", "templated"],
+  "method": "PUT",
+  "templated": false,
+  "file": "2222.txt",
+  "uploadStatusCode": 201
+  }]
