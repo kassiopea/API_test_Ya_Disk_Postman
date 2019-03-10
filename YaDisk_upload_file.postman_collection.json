@@ -214,7 +214,7 @@
 					"response": []
 				},
 				{
-					"name": "upload test file without field attach",
+					"name": "upload test file without attach",
 					"event": [
 						{
 							"listen": "test",
@@ -235,7 +235,16 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
 						"url": {
 							"raw": "{{url}}",
 							"host": [
