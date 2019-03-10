@@ -8,3 +8,6 @@
 *.tar
 *.zip
 Thumbs.db
+
+#my data file
+big10GBfile.tiff

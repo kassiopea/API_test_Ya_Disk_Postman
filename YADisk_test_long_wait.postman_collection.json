@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "18991d0a-22b4-4cf9-a7b8-856aa0dfa87f",
+		"name": "YADisk_test_long_wait",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "To get link",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+						"exec": [
+							"",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(`Status is ${data.linkStatusCode} and response is json`, function(){",
+							"    pm.response.to.have.status(data.linkStatusCode);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"if(responseCode.code !== 200){",
+							"        pm.globals.unset(\"url\");",
+							"        postman.setNextRequest(null);",
+							"    }",
+							"else{",
+							"    pm.globals.set(\"url\", jsonData.href);",
+							"    ",
+							"    if(data.timeOut === \"true\"){",
+							"        let timer = getMilliseconds(data.minTimeOut, data.secTimeOut);",
+							"        setTimeout(() => {postman.setNextRequest(\"Upload file\")}, timer);",
+							"    }",
+							"}",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d1f28f47-754a-4596-b18c-dc8c2eef5e58",
+						"exec": [
+							"function getMilliseconds(min, sec){",
+							"    let ms = (min * 60000) + (sec * 1000);",
+							"    return ms;",
+							"}",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "{{headers}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "{{headers}}"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path={{linkPath}}",
+					"protocol": "https",
+					"host": [
+						"cloud-api",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"v1",
+						"disk",
+						"resources",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "{{linkPath}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "68f7ce36-919f-4344-bdf8-9597419cec1f",
+						"exec": [
+							"pm.test(`Status code is ${data.uploadStatusCode}`, function(){",
+							"    pm.response.to.have.status(data.uploadStatusCode);",
+							"});",
+							"",
+							"pm.globals.unset(\"url\");",
+							"postman.setNextRequest(null);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6e84d18f-a297-4308-b087-0695e88a24e6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "{{folder_path}}{{file}}"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}",
+					"host": [
+						"{{url}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b4feb2e6-69c9-427b-a3c9-c2fc380c61a9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "30287947-7cc4-4b47-9b7c-fc209cd4985d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
