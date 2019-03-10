@@ -1,41 +1,37 @@
 [{"comment": "link with absolute path",
   "linkPath": "disk%3A%2Fuserpic_full.jpg",
   "linkStatusCode": 200,
-  "fields": ["href", "method", "templated"],
+  "responseFields": ["href", "method", "templated"],
   "method": "PUT",
-  "templated": false,
   "file": "userpic_full.jpg",
   "uploadStatusCode": 201
 },{
   "comment": "link with relative path to root directory ",
   "linkPath": "aboutIT.png",
   "linkStatusCode": 200,
-  "fields": ["href", "method", "templated"],
+  "responseFields": ["href", "method", "templated"],
   "method": "PUT",
-  "templated": false,
   "file": "aboutIT.png",
   "uploadStatusCode": 201
 },{
   "comment": "link with relative path to non-root folder",
   "linkPath": "test%2FaboutIT.png",
   "linkStatusCode": 200,
-  "fields": ["href", "method", "templated"],
+  "responseFields": ["href", "method", "templated"],
   "method": "PUT",
-  "templated": false,
   "file": "aboutIT.png",
   "uploadStatusCode": 201
 },{
   "comment": "link with invalid relative path to non-root folder",
   "linkPath": "invalid%2FaboutIT.png",
   "linkStatusCode": 409,
-  "fields": ["description", "error"]
+  "responseFields": ["description", "error"]
 },{
   "comment": "link with path without decoding in url",
   "linkPath": "test/main.pdf",
   "linkStatusCode": 200,
-  "fields": ["href", "method", "templated"],
+  "responseFields": ["href", "method", "templated"],
   "method": "PUT",
-  "templated": false,
   "file": "main.pdf",
   "uploadStatusCode": 201
 },{
@@ -43,9 +39,8 @@
   "linkPath1":"MyRsCVYb9xfi0iIzlep1K1NYP2SNkBhGF04TkSVTK4PRafdYfzursxmcAOnpOXP5SAmpt3j0AE1MLM2L0poOLJwjYmvDlOZgkoI9hT6n6V4dlmB0BwrgnSyCD1",
   "linkPath2":"jjocErgJFQnNmfQ2im2tAWXflvFSV77BTTxCdDeonVjeX0qRtwimnq33zDu7P40drAZKJBZQFP7t8sPLVe55l4IvPbPF9DPZIjQVXcNKbztKT8KeKRqQ16FTHJSs7rklA.txt",
   "linkStatusCode": 200,
-  "fields": ["href", "method", "templated"],
+  "responseFields": ["href", "method", "templated"],
   "method": "PUT",
-  "templated": false,
   "file": "255characters.txt",
   "uploadStatusCode": 201
 },{
@@ -53,20 +48,67 @@
   "linkPath1":"NOTRsCVYb9xfi0iIzlep1K1NYP2SNkBhGF04TkSVTK4PRafdYfzursxmcAOnpOXP5SAmpt3j0AE1MLM2L0poOLJwjYmvDlOZgkoI9hT6n6V4dlmB0BwrgnSyCD1",
   "linkPath2":"jjocErgJFQnNmfQ2im2tAWXflvFSV77BTTxCdDeonVjeX0qRtwimnq33zDu7P40drAZKJBZQFP7t8sPLVe55l4IvPbPF9DPZIjQVXcNKbztKT8KeKRqQ16FTHJSs7rklA.txt",
   "linkStatusCode": 404,
-  "fields": ["description", "error"]
+  "responseFields": ["description", "error"]
 },{
   "comment": "link to existing path",
   "linkPath": "aboutIT.png",
   "linkStatusCode": 409,
-  "fields": ["description", "error"]
+  "responseFields": ["description", "error"]
 },{
   "comment": "link with overwrite empty",
   "linkPath": "2222.jpg",
   "overwrite": "",
   "linkStatusCode": 200,
-  "fields": ["href", "method", "templated"],
+  "responseFields": ["href", "method", "templated"],
   "method": "PUT",
-  "templated": false,
-  "file": "2222.txt",
+  "file": "2222.jpg",
   "uploadStatusCode": 201
-  }]
+},{
+  "comment": "link with overwrite false",
+  "linkPath": "2222.jpg",
+  "overwrite": false,
+  "linkStatusCode": 409,
+  "responseFields": ["description", "error"]
+},{
+  "comment": "link with overwrite true and attach file with other name",
+  "linkPath": "2222.jpg",
+  "overwrite": true,
+  "linkStatusCode": 200,
+  "responseFields": ["href", "method", "templated"],
+  "method": "PUT",
+  "file": "Screenshot.png",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with overwrite with invalid param",
+  "linkPath": "2222.jpg",
+  "overwrite": "true",
+  "linkStatusCode": 409,
+  "responseFields": ["description", "error"]
+},{
+  "comment": "link with fields param",
+  "linkPath": "whatIsIt.txt",
+  "fields": "href",
+  "linkStatusCode": 200,
+  "responseFields": ["href"],
+  "file": "whatIsIt.txt",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with invalid fields param",
+  "linkPath": "new.pdf",
+  "fields": "name",
+  "linkStatusCode": 200,
+  "responseFields": ["href", "method", "templated"],
+  "method": "PUT",
+  "file": "main.pdf",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with all valid param",
+  "linkPath": "whatIsIt.txt",
+  "overwrite": "true",
+  "fields": "href,method",
+  "linkStatusCode": 200,
+  "responseFields": ["href", "method"],
+  "method": "PUT",
+  "file": "whatIsIt.txt",
+  "uploadStatusCode": 201
+}]

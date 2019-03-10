@@ -17,7 +17,15 @@
 								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
 								"exec": [
 									"if(pm.variables.get(\"iteration\")){",
-									"    postman.setNextRequest(\"To get link with requiered param\");",
+									"    ",
+									"    if(data.overwrite !== undefined){",
+									"        postman.setNextRequest(\"To get link with overwrite param\");",
+									"    }",
+									"    else{",
+									"        postman.setNextRequest(\"To get link with requiered param\");",
+									"        ",
+									"    }",
+									"",
 									"}else{",
 									"    const jsonData = pm.response.json();",
 									"",
@@ -49,18 +57,18 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "{{headers}}",
-								"type": "text"
+								"type": "text",
+								"value": "{{headers}}"
 							},
 							{
 								"key": "Content-Type",
-								"value": "{{headers}}",
-								"type": "text"
+								"type": "text",
+								"value": "{{headers}}"
 							},
 							{
 								"key": "Authorization",
-								"value": "{{auth}}",
-								"type": "text"
+								"type": "text",
+								"value": "{{auth}}"
 							}
 						],
 						"body": {
@@ -594,26 +602,6 @@
 							"script": {
 								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
 								"exec": [
-									"const jsonData = pm.response.json();",
-									"let dataFields = data.fields;",
-									"",
-									"",
-									"pm.test(`Status code is ${data.linkStatusCode}, response is json, and has fields: ${data.fields}`, function(){",
-									"    pm.response.to.have.status(data.linkStatusCode);",
-									"    pm.response.to.be.json;",
-									"    ",
-									"    for(let field of dataFields){",
-									"        pm.response.to.have.jsonBody(field);",
-									"    }",
-									"});",
-									"",
-									"if(responseCode.code === 200){",
-									"    pm.globals.set(\"url\", jsonData.href);",
-									"    postman.setNextRequest(\"Upload file\");",
-									"}",
-									"else{",
-									"    postman.setNextRequest(null);",
-									"}",
 									"",
 									""
 								],
@@ -625,11 +613,7 @@
 							"script": {
 								"id": "d1f28f47-754a-4596-b18c-dc8c2eef5e58",
 								"exec": [
-									"if(data.linkPath2){",
-									"    let fullLinkPath = data.linkPath1 + data.linkPath2;",
-									"",
-									"    pm.globals.set(\"linkPath\", fullLinkPath);",
-									"}"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -681,6 +665,83 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "To get link with overwrite param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d1f28f47-754a-4596-b18c-dc8c2eef5e58",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path={{linkPath}}&overwrite={{overwrite}}",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "{{linkPath}}"
+								},
+								{
+									"key": "overwrite",
+									"value": "{{overwrite}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -690,7 +751,11 @@
 						"id": "81f56c4d-2e0d-4a8d-b2aa-8cf902e7dc3e",
 						"type": "text/javascript",
 						"exec": [
-							""
+							"if(data.linkPath2){",
+							"    let fullLinkPath = data.linkPath1 + data.linkPath2;",
+							"",
+							"    pm.globals.set(\"linkPath\", fullLinkPath);",
+							"}"
 						]
 					}
 				},
@@ -700,7 +765,26 @@
 						"id": "194ea0c1-5a0b-4e9e-bc6b-d15066d1fb0c",
 						"type": "text/javascript",
 						"exec": [
-							""
+							"const jsonData = pm.response.json();",
+							"let dataFields = data.fields;",
+							"",
+							"",
+							"pm.test(`Status code is ${data.linkStatusCode}, response is json, and has fields: ${data.fields}`, function(){",
+							"    pm.response.to.have.status(data.linkStatusCode);",
+							"    pm.response.to.be.json;",
+							"    ",
+							"    for(let field of dataFields){",
+							"        pm.response.to.have.jsonBody(field);",
+							"    }",
+							"});",
+							"",
+							"if(responseCode.code === 200){",
+							"    pm.globals.set(\"url\", jsonData.href);",
+							"    postman.setNextRequest(\"Upload file\");",
+							"}",
+							"else{",
+							"    postman.setNextRequest(null);",
+							"}"
 						]
 					}
 				}
