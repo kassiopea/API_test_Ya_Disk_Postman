@@ -18,7 +18,15 @@
 								"exec": [
 									"if(pm.variables.get(\"iteration\")){",
 									"    ",
-									"    if(data.overwrite !== undefined){",
+									"    if(data.fields !== undefined && data.overwrite !== undefined){",
+									"        postman.setNextRequest(\"To get link with all param\");",
+									"    }",
+									"    ",
+									"    else if(data.fields !== undefined){",
+									"        postman.setNextRequest(\"To get link with fields param\");",
+									"    }",
+									"    ",
+									"    else if(data.overwrite !== undefined){",
 									"        postman.setNextRequest(\"To get link with overwrite param\");",
 									"    }",
 									"    else{",
@@ -742,6 +750,163 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "To get link with fields param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d1f28f47-754a-4596-b18c-dc8c2eef5e58",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path={{linkPath}}&fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "{{linkPath}}"
+								},
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "To get link with all param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+								"exec": [
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d1f28f47-754a-4596-b18c-dc8c2eef5e58",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "{{headers}}"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{auth}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path={{linkPath}}&overwrite={{overwrite}}&fields={{fields}}",
+							"protocol": "https",
+							"host": [
+								"cloud-api",
+								"yandex",
+								"net"
+							],
+							"path": [
+								"v1",
+								"disk",
+								"resources",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "path",
+									"value": "{{linkPath}}"
+								},
+								{
+									"key": "overwrite",
+									"value": "{{overwrite}}"
+								},
+								{
+									"key": "fields",
+									"value": "{{fields}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"event": [
@@ -766,15 +931,19 @@
 						"type": "text/javascript",
 						"exec": [
 							"const jsonData = pm.response.json();",
-							"let dataFields = data.fields;",
+							"let dataFields = data.responseFields;",
 							"",
 							"",
-							"pm.test(`Status code is ${data.linkStatusCode}, response is json, and has fields: ${data.fields}`, function(){",
+							"pm.test(`Status code is ${data.linkStatusCode}, response is json, and has fields: ${dataFields}`, function(){",
 							"    pm.response.to.have.status(data.linkStatusCode);",
 							"    pm.response.to.be.json;",
 							"    ",
 							"    for(let field of dataFields){",
 							"        pm.response.to.have.jsonBody(field);",
+							"    }",
+							"    ",
+							"    if(data.method !== undefined){",
+							"        pm.expect(jsonData.method).to.eql(data.method);",
 							"    }",
 							"});",
 							"",

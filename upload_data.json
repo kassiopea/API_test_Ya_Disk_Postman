@@ -64,7 +64,7 @@
   "file": "2222.jpg",
   "uploadStatusCode": 201
 },{
-  "comment": "link with overwrite false",
+  "comment": "link with overwrite false and linkPath which alrady was uploaded early",
   "linkPath": "2222.jpg",
   "overwrite": false,
   "linkStatusCode": 409,
@@ -79,11 +79,14 @@
   "file": "Screenshot.png",
   "uploadStatusCode": 201
 },{
-  "comment": "link with overwrite with invalid param",
+  "comment": "link with overwrite with invalid param and existing linkPath",
   "linkPath": "2222.jpg",
-  "overwrite": "true",
-  "linkStatusCode": 409,
-  "responseFields": ["description", "error"]
+  "overwrite": "name",
+  "linkStatusCode": 200,
+  "responseFields": ["href", "method", "templated"],
+  "method": "PUT",
+  "file": "Screenshot.png",
+  "uploadStatusCode": 201
 },{
   "comment": "link with fields param",
   "linkPath": "whatIsIt.txt",
@@ -109,6 +112,6 @@
   "linkStatusCode": 200,
   "responseFields": ["href", "method"],
   "method": "PUT",
-  "file": "whatIsIt.txt",
+  "file": "aboutIT.png",
   "uploadStatusCode": 201
 }]
