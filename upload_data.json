@@ -115,12 +115,12 @@
   "uploadStatusCode": 201
 },{
   "comment": "link with invalid one of the fields param",
-  "linkPath": "new.pdf",
+  "linkPath": "API Postman.docx",
   "fields": "name,href",
   "linkStatusCode": 200,
-  "responseFields": ["href", "method", "templated"],
+  "responseFields": ["href"],
   "method": "PUT",
-  "file": "main.pdf",
+  "file": "API Postman.docx",
   "uploadStatusCode": 201
 },{
   "comment": "link with all valid param",
