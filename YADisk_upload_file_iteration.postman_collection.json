@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "18991d0a-22b4-4cf9-a7b8-856aa0dfa87f",
-		"name": "YADisk_test_long_wait",
+		"name": "YADisk_upload_file_iteration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -13,8 +13,10 @@
 					"script": {
 						"id": "74c46251-a467-4203-af8b-bdbc19387c07",
 						"exec": [
-							"",
-							"",
+							"function getMilliseconds(min, sec){",
+							"    let ms = (min * 60000) + (sec * 1000);",
+							"    return ms;",
+							"}",
 							"const jsonData = pm.response.json();",
 							"",
 							"pm.test(`Status is ${data.linkStatusCode} and response is json`, function(){",
@@ -29,7 +31,7 @@
 							"else{",
 							"    pm.globals.set(\"url\", jsonData.href);",
 							"    ",
-							"    if(data.timeOut === \"true\"){",
+							"    if(data.timeOut){",
 							"        let timer = getMilliseconds(data.minTimeOut, data.secTimeOut);",
 							"        setTimeout(() => {postman.setNextRequest(\"Upload file\")}, timer);",
 							"    }",
@@ -50,10 +52,7 @@
 					"script": {
 						"id": "d1f28f47-754a-4596-b18c-dc8c2eef5e58",
 						"exec": [
-							"function getMilliseconds(min, sec){",
-							"    let ms = (min * 60000) + (sec * 1000);",
-							"    return ms;",
-							"}",
+							"",
 							"",
 							"",
 							"",
@@ -122,8 +121,13 @@
 							"    pm.response.to.have.status(data.uploadStatusCode);",
 							"});",
 							"",
-							"pm.globals.unset(\"url\");",
-							"postman.setNextRequest(null);"
+							"if(responseCode.code === 201 || responseCode.code === 202){",
+							"    postman.setNextRequest(\"To verify uploaded file\");",
+							"}else{",
+							"    pm.globals.unset(\"url\");",
+							"    postman.setNextRequest(null);",
+							"    ",
+							"}"
 						],
 						"type": "text/javascript"
 					}
@@ -156,6 +160,75 @@
 					"raw": "{{url}}",
 					"host": [
 						"{{url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "To verify uploaded file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e77893fd-aa48-418c-9e3b-824c5b024c6c",
+						"exec": [
+							"pm.test(`Status code is 200 and response is json`, function(){",
+							"    pm.response.to.have.status(200);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"postman.setNextRequest(null);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://cloud-api.yandex.net/v1/disk/resources?path={{linkPath}}&fields=name,created,modified",
+					"protocol": "https",
+					"host": [
+						"cloud-api",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"v1",
+						"disk",
+						"resources"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "{{linkPath}}"
+						},
+						{
+							"key": "fields",
+							"value": "name,created,modified"
+						}
 					]
 				}
 			},
