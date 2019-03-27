@@ -6,7 +6,7 @@
   "file": "userpic_full.jpg",
   "uploadStatusCode": 201
 },{
-  "comment": "link with relative path to root directory ",
+  "comment": "link with relative path to root directory",
   "linkPath": "aboutIT.png",
   "linkStatusCode": 200,
   "responseFields": ["href", "method", "templated"],
@@ -79,13 +79,22 @@
   "file": "Screenshot.png",
   "uploadStatusCode": 201
 },{
-  "comment": "link with overwrite with invalid param and existing linkPath",
+  "comment": "link with overwrite true and attach file with existing in the YADisk",
   "linkPath": "2222.jpg",
+  "overwrite": true,
+  "linkStatusCode": 200,
+  "responseFields": ["href", "method", "templated"],
+  "method": "PUT",
+  "file": "2222.jpg",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with overwrite with invalid param and existing linkPath",
+  "linkPath": "test.txt",
   "overwrite": "name",
   "linkStatusCode": 200,
   "responseFields": ["href", "method", "templated"],
   "method": "PUT",
-  "file": "Screenshot.png",
+  "file": "test.txt",
   "uploadStatusCode": 201
 },{
   "comment": "link with fields param",
@@ -99,6 +108,15 @@
   "comment": "link with invalid fields param",
   "linkPath": "new.pdf",
   "fields": "name",
+  "linkStatusCode": 200,
+  "responseFields": ["href", "method", "templated"],
+  "method": "PUT",
+  "file": "main.pdf",
+  "uploadStatusCode": 201
+},{
+  "comment": "link with invalid one of the fields param",
+  "linkPath": "new.pdf",
+  "fields": "name,href",
   "linkStatusCode": 200,
   "responseFields": ["href", "method", "templated"],
   "method": "PUT",
