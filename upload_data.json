@@ -119,7 +119,6 @@
   "fields": "name,href",
   "linkStatusCode": 200,
   "responseFields": ["href"],
-  "method": "PUT",
   "file": "API Postman.docx",
   "uploadStatusCode": 201
 },{
