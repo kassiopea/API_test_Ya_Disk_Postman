@@ -447,7 +447,7 @@
 					"response": []
 				},
 				{
-					"name": "To get link without wrong/xml headers",
+					"name": "To get link with wrong/xml headers",
 					"event": [
 						{
 							"listen": "test",

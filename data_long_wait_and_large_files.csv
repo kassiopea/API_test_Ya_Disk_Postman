@@ -1,0 +1,7 @@
+linkPath,linkStatusCode,timeOut,minTimeOut,secTimeOut,file,uploadStatusCode
+3.jpg,200,true,00,05,3.jpg,201
+01_data_collection.csv,200,true,29,59,01_data_collection.csv,201
+updated_data.xlsx,200,true,30,0,updated_data.xlsx,404
+test.txt,200,true,30,01,test.txt,404
+9_99GbTestData.png,200,false,,,9_99GbTestData.png,201
+2GbTestData.png,200,false,,,2GbTestData.png,507
