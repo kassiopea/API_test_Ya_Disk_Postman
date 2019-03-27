@@ -6,8 +6,12 @@
 * newman
 * postman (optional)
 ----------------------
-### Подготовка среды в linux (Ubuntu, linux mint)
 
+1. [Подготовка среды. Установка необходимых приложений](#installation)
+2. [Содержание тестов](#tests_contains)
+
+
+### <a name="installation"></a> Подготовка среды в linux (Ubuntu, linux mint)
 
 Для пакетной установки всех файлов перейдите в директорию с проектом и запустите в консоли:
 ```
@@ -51,3 +55,6 @@ sudo install snap
 sudo snap install postman
 ```
 Postman можно установить и [другим способом](https://learning.getpostman.com/docs/postman/launching_postman/installation_and_updates/#linux-installation).
+
+
+###<a name="tests_contains"></a>Содержание тестов
