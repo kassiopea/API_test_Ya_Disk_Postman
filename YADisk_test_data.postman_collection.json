@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "cdefc4f4-88b9-4fc4-838b-6cb4086b730f",
+		"name": "YADisk_test_data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "To get link",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "74c46251-a467-4203-af8b-bdbc19387c07",
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(`Status is ok and response is json`, function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.globals.set(\"url\", jsonData.href);",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d1f28f47-754a-4596-b18c-dc8c2eef5e58",
+						"exec": [
+							"let link = '2GbTestData' + _.random(1,13) + '.png';",
+							"",
+							"pm.globals.set(\"linkPath\", link);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "{{headers}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "{{headers}}"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{auth}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://cloud-api.yandex.net/v1/disk/resources/upload?path={{linkPath}}",
+					"protocol": "https",
+					"host": [
+						"cloud-api",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"v1",
+						"disk",
+						"resources",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "{{linkPath}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "68f7ce36-919f-4344-bdf8-9597419cec1f",
+						"exec": [
+							"pm.test(`Status code is 201`, function(){",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.globals.unset(\"url\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6e84d18f-a297-4308-b087-0695e88a24e6",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "{{folder_path}}2GbTestData.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}",
+					"host": [
+						"{{url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "To verify uploaded file",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e77893fd-aa48-418c-9e3b-824c5b024c6c",
+						"exec": [
+							"const necessarySpace = 2147483648;",
+							"// const necessarySpace = 8000000000;",
+							"",
+							"pm.test(`Status code is 200 and response is json`, function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"const getEmptySpace = {",
+							"    url: 'https://cloud-api.yandex.net/v1/disk/',",
+							"    method: 'GET',",
+							"    header: {",
+							"        'Authorization': pm.environment.get(\"auth\")",
+							"    }",
+							"};",
+							"",
+							"",
+							"pm.sendRequest(getEmptySpace, function (err, res) {",
+							"    ",
+							"    if(err) {",
+							"        colsole.log(err);",
+							"    }else{",
+							"        ",
+							"        const resJsonData = pm.res.json();",
+							"        let emptySpace = resJsonData.total_space - resJsonData.used_space;",
+							"        ",
+							"        if(emptySpace > necessarySpace){",
+							"            postman.setNextRequest(\"To get link\");",
+							"        }else{postman.setNextRequest(null);}",
+							"    }",
+							"    ",
+							"});",
+							"",
+							"",
+							"pm.globals.unset(\"linkPath\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f10e9bc4-b5b7-4b11-a391-711761648ac5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://cloud-api.yandex.net/v1/disk/resources?path={{linkPath}}&fields=name,created,modified",
+					"protocol": "https",
+					"host": [
+						"cloud-api",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"v1",
+						"disk",
+						"resources"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "{{linkPath}}"
+						},
+						{
+							"key": "fields",
+							"value": "name,created,modified"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "To verify uploaded file Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e77893fd-aa48-418c-9e3b-824c5b024c6c",
+						"exec": [
+							"const necessarySpace = 2147483648;",
+							"// const necessarySpace = 8000000000;",
+							"",
+							"pm.test(`Status code is 200 and response is json`, function(){",
+							"    pm.response.to.be.ok;",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"const getEmptySpace = {",
+							"    url: 'https://cloud-api.yandex.net/v1/disk/',",
+							"    method: 'GET',",
+							"    header: {",
+							"        'Authorization': pm.environment.get(\"auth\")",
+							"    }",
+							"};",
+							"",
+							"",
+							"pm.sendRequest(getEmptySpace, function (error, response) {",
+							"    ",
+							"    if(error) {",
+							"        colsole.log(\"Error: \" + error);",
+							"    }else{",
+							"        ",
+							"        const resJsonData = response.json();",
+							"        ",
+							"        let emptySpace = resJsonData.total_space - resJsonData.used_space;",
+							"        ",
+							"        if(emptySpace > necessarySpace){",
+							"            postman.setNextRequest(\"To get link\");",
+							"        }else{postman.setNextRequest(null);}",
+							"    }",
+							"    ",
+							"});",
+							"",
+							"",
+							"pm.globals.unset(\"linkPath\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f10e9bc4-b5b7-4b11-a391-711761648ac5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://cloud-api.yandex.net/v1/disk/resources?path=test.txt&fields=name,created,modified",
+					"protocol": "https",
+					"host": [
+						"cloud-api",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"v1",
+						"disk",
+						"resources"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "test.txt"
+						},
+						{
+							"key": "fields",
+							"value": "name,created,modified"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b4feb2e6-69c9-427b-a3c9-c2fc380c61a9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "30287947-7cc4-4b47-9b7c-fc209cd4985d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
