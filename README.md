@@ -98,7 +98,10 @@ newman run <название коллекции> -e <файл с окружен�
 ```
 newman run YADisk_upload_file.postman_collection.json -e dev.postman_environment.json -d upload_data.json
 ```
-
+Перед запуском каждой коллекции необходимо запустить очистку диска от данных. Для этого запускаем коллекцию "YADisk_delete_before_running_the_scripts.postman_collection.json". Например, в newman
+```
+newman run YADisk_delete_before_running_the_scripts.postman_collection.json -e dev.postman_environment.json
+```
 
 ### <a name="tests_contains"></a> Содержание тестов
 **<a name="tests_upload"></a> YADisk_upload_file.postman_collection.json**
