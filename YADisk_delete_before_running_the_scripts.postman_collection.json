@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "ca481d4a-f1b0-4a1a-a483-96ccf6fed1d9",
+		"name": "YADisk_delete_before_running_the_scripts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET_data_about_used_space",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "615b565c-b128-4a97-ba22-ba8b4879d15c",
+						"exec": [
+							"if (pm.variables.get(\"iteration_del\")){",
+							"    postman.setNextRequest(\"Delete_file\");",
+							"}",
+							"else{",
+							"    pm.test(`YADisk is json, status code is 200`, function(){",
+							"        pm.response.to.be.json;",
+							"        pm.response.to.be.ok;",
+							"    });",
+							"",
+							"    const toGetListFiles = {",
+							"        url: 'https://cloud-api.yandex.net/v1/disk/resources/files?limit=150&fields=items.path',",
+							"        method: 'GET',",
+							"        header: `Authorization:${pm.variables.get(\"auth\")}`",
+							"    };",
+							"    ",
+							"    const jsonData = pm.response.json();",
+							"    const usedSpace = jsonData.used_space;",
+							"    ",
+							"    pm.test(`used space = ${jsonData.used_space}`, function(){",
+							"        pm.response.to.have.jsonBody(\"used_space\");",
+							"    });",
+							"    ",
+							"    if (usedSpace > 0){",
+							"        ",
+							"        pm.sendRequest(toGetListFiles, function (err, res) {",
+							"            if (err){",
+							"                console.log(err);",
+							"            }",
+							"            else{",
+							"                const pathList = res.json();",
+							"                let listToDel = [];",
+							"                ",
+							"                for (let i in pathList.items){",
+							"                    listToDel.push(pathList.items[i].path);",
+							"                }",
+							"                ",
+							"                pm.globals.set(\"listToDel\", listToDel);",
+							"            }",
+							"    ",
+							"        });",
+							"        ",
+							"    }else{postman.setNextRequest(null)}",
+							"    ",
+							"    ",
+							"    pm.globals.set(\"iteration_del\", 1);",
+							"}",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://cloud-api.yandex.net/v1/disk/",
+					"protocol": "https",
+					"host": [
+						"cloud-api",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"v1",
+						"disk",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete_file",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8b430f7e-47a5-4207-b60b-01ead3f0bde5",
+						"exec": [
+							"let listLinks = pm.variables.get(\"listToDel\");",
+							"let pathLink = listLinks.pop();",
+							"pm.globals.set(\"pathLink\", pathLink);",
+							"pm.globals.set(\"listToDel\", listLinks);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1c7518a8-ede0-4cb2-8d2d-eade717a0277",
+						"exec": [
+							"pm.test(\"Status code is 204. File was deleted\", function(){",
+							"   pm.response.to.have.status(204);",
+							"});",
+							"",
+							"if (pm.variables.get(\"listToDel\").length > 0){",
+							"   postman.setNextRequest(\"Delete_file\");",
+							"}else{postman.setNextRequest(null)}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "{{headers}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{auth}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://cloud-api.yandex.net/v1/disk/resources?path={{pathLink}}&permanently=true",
+					"protocol": "https",
+					"host": [
+						"cloud-api",
+						"yandex",
+						"net"
+					],
+					"path": [
+						"v1",
+						"disk",
+						"resources"
+					],
+					"query": [
+						{
+							"key": "path",
+							"value": "{{pathLink}}"
+						},
+						{
+							"key": "permanently",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
