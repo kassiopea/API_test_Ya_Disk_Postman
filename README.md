@@ -60,6 +60,8 @@ sudo snap install postman
 ```
 Postman можно установить и [другим способом](https://learning.getpostman.com/docs/postman/launching_postman/installation_and_updates/#linux-installation).
 
+После установки необходимых приложений, скопируйте репозиторий на локальный компьютер.
+
 ### <a name="testfiles"></a> Подготовка файлов для загрузки
 
 Все файлы для прогона тестов с помощью коллекции ***YADisk_upload_file.postman_collection.json*** хранятся в папке files. Если путь к папке и/или название папке меняется, необходимо внести корректировки в файл "dev.postman_environment.json". Путь меняем в значении ключа "value" в блоке с ключом "folder_path".
@@ -77,6 +79,7 @@ Postman можно установить и [другим способом](https
 Для запуска тестов c помощью коллекции ***YADisk_upload_file_iteration.postman_collection.json*** необходимо создать файлы больших размеров. В данном случае, файлы:
 
 --  ***9_99GbTestData.png*** размером 9,99ГБ
+
 -- ***2GbTestData.png*** размером 2ГБ
 
 В Linux можно воспользоваться командой:
