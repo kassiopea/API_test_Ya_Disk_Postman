@@ -38,8 +38,7 @@
 
 1. [dev.postman_environment.json](#env)
 
--------
-#### Условия запуска тестов
+### Условия запуска тестов
 
 Перед запуском любой из коллекции, необходимо запустить ***YADisk_delete_before_running_the_scripts.postman_collection.json*** с указанием окружения для очистки Я.Диск.
 
