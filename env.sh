@@ -9,8 +9,8 @@ sudo apt install npm
 #install dependencies in pacage.json
 npm init
 
-#install newman reporter html
-sudo npm install -g newman-reporter-html
+#install newman
+sudo npm install -g newman
 
 #install snap
 sudo install snap
