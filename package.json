@@ -8,7 +8,8 @@
     "url": "https://github.com/kassiopea/API_test_Ya_Disk.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "upload_file": "newman run YADisk_upload_file.postman_collection.json -e dev.postman_environment.json -d upload_data.json"
   },
   "author": "Anastasia Salikova <randomNaNastya@gmail.com>",
   "license": "ISC",
