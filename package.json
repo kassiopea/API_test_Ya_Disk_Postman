@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "upload_file": "newman run YADisk_upload_file.postman_collection.json -e dev.postman_environment.json -d upload_data.json"
+    "upload_file": "newman run YADisk_upload_file.postman_collection.json -e dev.postman_environment.json -d upload_data.json",
+    "clear_disk": "YADisk_delete_before_running_the_scripts.postman_collection.json"
   },
   "author": "Anastasia Salikova <randomNaNastya@gmail.com>",
   "license": "ISC",
